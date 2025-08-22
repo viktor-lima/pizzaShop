@@ -1,6 +1,8 @@
 import { Separator } from "@radix-ui/react-separator";
 import { Home, Pizza, UtensilsCrossed } from "lucide-react";
 import { NavLink } from "./NavLink";
+import { ThemeToggle } from "./theme/theme-toogle";
+import { AccountMenu } from "./accountMenu";
 
 export function Header(){
     return (
@@ -19,7 +21,12 @@ export function Header(){
                         <UtensilsCrossed className="h-4 w-4"/>
                         Pedidos
                     </NavLink>
+
                 </nav>
+                <div className="ml-auto flex items-center gap-2">
+                    <ThemeToggle />
+                    <AccountMenu />
+                </div>
             </div>
         </div>
     )
