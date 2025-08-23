@@ -2,7 +2,7 @@ import { Separator } from "@radix-ui/react-separator";
 import { Home, Pizza, UtensilsCrossed } from "lucide-react";
 import { NavLink } from "./NavLink";
 import { ThemeToggle } from "./theme/theme-toogle";
-import { AccountMenu } from "./accountMenu";
+import { AccountMenu } from "./AccountMenu";
 
 export function Header(){
     return (
