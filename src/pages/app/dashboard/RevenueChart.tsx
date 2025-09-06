@@ -52,7 +52,7 @@ export function RevenueChart(props: RevenueChartProps) {
     <Card className="col-span-6">
       <CardHeader className="flex-row items-center justify-between pb-8">
         <div className="space-y-1">
-          <CardTitle className="text-base font-medium">Receita no Período</CardTitle>
+          <CardTitle className="text-base font-medium">|Receita no Período</CardTitle>
           <CardDescription>Receita diaria no período</CardDescription>
         </div>
       </CardHeader>
@@ -79,8 +79,10 @@ export function RevenueChart(props: RevenueChartProps) {
             })} />
  
 
+            <CartesianGrid vertical={false} className="stroke-muted"/>
 
             <Line type='linear' strokeWidth={2} dataKey="revenue" stroke={colors.violet[500]}/>
+
           </LineChart>
         </ResponsiveContainer>
       </CardContent>
