@@ -6,7 +6,9 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { toast  } from 'sonner'
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { registerRestaurant } from "@/api/registerRestaurant";
 
 const signUpForm = z.object({
   restaurantName: z.string(),
@@ -18,18 +20,26 @@ const signUpForm = z.object({
 type SingUpForm = z.infer<typeof signUpForm>
 
 export function SignUp() {
-
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: {isSubmitted}} = useForm<SingUpForm>()
 
+  const { mutateAsync: registerRestaurantFn } = useMutation({
+    mutationFn: registerRestaurant,
+  })
+
   async function handleSignUp (data: SingUpForm) {
     console.log(data)
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await registerRestaurantFn({
+      restaurantName: data.restaurantName,
+      managerName: data.managerName,
+      email: data.email,
+      phone: data.phone,
+    })
     toast.success('Restaurante cadastrado com sucesso', {
       action :{
         label: 'Login',
-        onClick: () => {navigate('/sing-in')}
+        onClick: () => {navigate(`/sing-in?email=${data.email}`)}
       }
     })
   }
