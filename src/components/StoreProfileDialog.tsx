@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "./ui/button";
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
+import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-import { getManagedRestaurant } from "@/api/getManagedRestaurant";
+import { getManagedRestaurant, GetManagedRestaurantResponse } from "@/api/getManagedRestaurant";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { updateProfile } from "@/api/updateProfile";
+import { toast } from "sonner";
 
 
 const storeProfileSchema = z.object({
@@ -18,6 +20,8 @@ type StoreProfileSchema = z.infer<typeof storeProfileSchema>
 
 export function StoreProfileDialog() {
 
+  const queryClient = useQueryClient()
+
   const { data: managedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'],
     queryFn: getManagedRestaurant,
@@ -25,7 +29,8 @@ export function StoreProfileDialog() {
 
   const {
     register,
-    handleSubmit
+    handleSubmit,
+    formState: {isSubmitting},
   } = useForm<StoreProfileSchema>({
     resolver: zodResolver(storeProfileSchema),
     values: {
@@ -33,6 +38,34 @@ export function StoreProfileDialog() {
       description: managedRestaurant?.description ?? '',
     }
   })
+
+  const { mutateAsync: updateProfileFn } = useMutation({
+    mutationFn: updateProfile,
+    onSuccess(_, { name, description }) {
+      const cached = queryClient.getQueryData<GetManagedRestaurantResponse>(['managed-restaurant'])
+      
+      if(cached) {
+        queryClient.setQueryData(['managed-restaurant'], {
+          ...cached,
+          name, 
+          description,
+        })
+      }
+    },
+  })
+
+  async function handleUpdateProfile(data: StoreProfileSchema) {
+    try{
+      await updateProfileFn({
+        name: data.name,
+        description: data.description,
+      })
+
+      toast.success("perfil Atualizado com sucesso")
+    }catch {
+      toast.error("Falha ao atualizar Perfil, tente novamente!")
+    }
+  }
   
 
   return (
@@ -43,7 +76,7 @@ export function StoreProfileDialog() {
       </DialogHeader>
       
 
-      <form>
+      <form onSubmit={handleSubmit(handleUpdateProfile)}>
         <div className=" space-y-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right" htmlFor="name">Nome</Label>
@@ -60,8 +93,12 @@ export function StoreProfileDialog() {
 
 
         <DialogFooter>
-          <Button type="button" variant="ghost">Cancelar</Button>
-          <Button type="submit" variant="success">Salvar</Button>
+          <DialogClose asChild>
+            <Button type="button" variant="ghost">Cancelar</Button>
+          </DialogClose>
+          <DialogClose>
+            <Button type="submit" variant="success" disabled={isSubmitting}>Salvar</Button>
+          </DialogClose>
         </DialogFooter>
       </form>
     </DialogContent>
