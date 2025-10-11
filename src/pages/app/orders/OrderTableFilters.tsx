@@ -40,7 +40,7 @@ export function OrderTableFilters(props: OrderTableFiltersProps) {
   function handleFilter({orderId, customerName, status}: OrderFiltersSchema) {
     setSearchParams(state => {
       if(orderId) {
-        state.set('orderid', orderId);
+        state.set('orderId', orderId);
       } else {
         state.delete('orderId');
       }
