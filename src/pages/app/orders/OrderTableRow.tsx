@@ -15,6 +15,7 @@ import { approveOrder } from "@/api/ApproveOrder";
 import { dispatchOrder } from "@/api/DispatchOrder";
 import { deliverOrder } from "@/api/DeliveryOrder";
 import { OrderStatus, OrderStatusEnum } from "@/components/ORderStatus";
+import { PTBR } from "@/app/constants/linguage";
 
 interface OrderTableRowProps {
   key: string
@@ -109,7 +110,7 @@ export function OrderTableRow(props: OrderTableRowProps) {
       </TableCell>
       <TableCell className="font-medium">{order.customerName}</TableCell>
       <TableCell className="font-medium">
-        {(order.total / 100).toLocaleString('pt-BR', {
+        {(order.total / 100).toLocaleString(PTBR, {
           style: 'currency',
           currency: 'BRL'
         })}

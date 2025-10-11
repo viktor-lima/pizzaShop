@@ -1,4 +1,7 @@
+import { getMonthCanceledOrdersAmount } from "@/api/getMonthCanceledOrdersAmount";
+import { PTBR } from "@/app/constants/linguage";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 import { DollarSign } from "lucide-react";
 
 interface MonthCanceledOrdersAmountCardProps {
@@ -6,6 +9,13 @@ interface MonthCanceledOrdersAmountCardProps {
 }
 
 export function MonthCanceledOrdersAmountCard(props: MonthCanceledOrdersAmountCardProps) {
+
+  const { data: monthCanceledOrdersAmount} = useQuery({
+    queryFn: getMonthCanceledOrdersAmount,
+    queryKey: ['metrics', 'month-canceled-orders-amount']
+  })
+  
+
   return (
     <Card>
       <CardHeader className="flex-row items-center space-y-0 justify-between pb-2">
@@ -13,10 +23,22 @@ export function MonthCanceledOrdersAmountCard(props: MonthCanceledOrdersAmountCa
         <DollarSign className="h-4 w-4 text-muted-foreground"/>
       </CardHeader>
       <CardContent className="space-y-1">
-        <span className="text-2xl font-bold tracking-tight">32</span>
-        <p className="text-xs text-muted-foreground">
-          <span className="text-emerald-600 dark:text-emerald-400">-2%</span> em relação ao mês passado
-        </p>
+        {monthCanceledOrdersAmount && (
+          <>
+          <span className="text-2xl font-bold tracking-tight">{monthCanceledOrdersAmount.amount.toLocaleString(PTBR)}</span>
+          <p className="text-xs text-muted-foreground">
+            {monthCanceledOrdersAmount.diffFromLastMonth < 0 ? (
+              <>
+                <span className="text-emerald-600 dark:text-emerald-400">{monthCanceledOrdersAmount.diffFromLastMonth}%</span>  em relação ao mês passado
+              </>
+            ) : (
+              <>
+                <span className="text-rose-600 dark:text-rose-400">+{monthCanceledOrdersAmount.diffFromLastMonth}%</span> em relação ao mês passado
+              </>
+            )}
+          </p>
+          </> 
+        )}
       </CardContent>
     </Card>
   );

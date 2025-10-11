@@ -1,3 +1,4 @@
+import { PTBR } from "@/app/constants/linguage";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ResponsiveContainer,
@@ -73,7 +74,7 @@ export function RevenueChart(props: RevenueChartProps) {
               axisLine={false} 
               tickLine={false} 
               width={90}
-              tickFormatter={(value: number) => value.toLocaleString('pt-BR',{
+              tickFormatter={(value: number) => value.toLocaleString(PTBR,{
                 style: 'currency',
                 currency: "BRL"
             })} />

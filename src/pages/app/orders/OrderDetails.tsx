@@ -1,4 +1,5 @@
 import { getOrderDetails } from "@/api/getOrderDetails";
+import { PTBR } from "@/app/constants/linguage";
 import { OrderStatus } from "@/components/ORderStatus";
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -91,13 +92,13 @@ export function OrderDetails({orderId, open}: OrderDetailsProps) {
                     <TableCell>{item.product.name}</TableCell>
                     <TableCell className="text-right">{item.quantity}</TableCell>
                     <TableCell className="text-right">
-                      {(item.priceInCents / 100).toLocaleString('pt-BR', {
+                      {(item.priceInCents / 100).toLocaleString(PTBR, {
                         style: 'currency',
                         currency: 'BRL'
                       })}
                     </TableCell>
                     <TableCell className="text-right">
-                      {((item.priceInCents * item.quantity) / 100).toLocaleString('pt-BR', {
+                      {((item.priceInCents * item.quantity) / 100).toLocaleString(PTBR, {
                         style: 'currency',
                         currency: 'BRL'
                       })}
@@ -110,7 +111,7 @@ export function OrderDetails({orderId, open}: OrderDetailsProps) {
               <TableRow>
                 <TableCell colSpan={3}>Total do Pedido</TableCell>
                 <TableCell className="text-right font-medium">
-                  {(order.totalInCents / 100).toLocaleString('pt-BR', {
+                  {(order.totalInCents / 100).toLocaleString(PTBR, {
                     style: 'currency',
                     currency: 'BRL'
                   })}
