@@ -29,7 +29,6 @@ export function SignUp() {
   })
 
   async function handleSignUp (data: SingUpForm) {
-    console.log(data)
     await registerRestaurantFn({
       restaurantName: data.restaurantName,
       managerName: data.managerName,

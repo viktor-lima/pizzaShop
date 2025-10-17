@@ -31,7 +31,6 @@ export function SignIn() {
   })
 
   async function handleSignIn (data: SingInForm) {
-    console.log(data)
     try {
       await authenticate({email: data.email})
       toast.success('Enviamos um link de autenticação para seu e-mail.', {

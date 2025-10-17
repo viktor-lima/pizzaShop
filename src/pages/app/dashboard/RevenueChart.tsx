@@ -1,5 +1,11 @@
+import { getDailyRenevueinPeriod } from "@/api/getDailyRenevueinPeriod";
 import { PTBR } from "@/app/constants/linguage";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DateRangePicker } from "@/components/ui/DateRangePicker";
+import { Label } from "@/components/ui/label";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { DateRange } from "react-day-picker";
 import {
   ResponsiveContainer,
   LineChart,
@@ -7,48 +13,31 @@ import {
   YAxis,
   CartesianGrid,
   Line,
-  Tooltip
 } from 'recharts'
-
+import { subDays } from 'date-fns'
 import colors from 'tailwindcss/colors'
-
-
-const data = [
-  {
-    date: '10/12',
-    revenue: 1200
-  },
-  {
-    date: '11/12',
-    revenue: 800
-  },
-  {
-    date: '12/12',
-    revenue: 900
-  },
-  {
-    date: '13/12',
-    revenue: 400
-  },
-  {
-    date: '14/12',
-    revenue: 2300
-  },
-  {
-    date: '15/12',
-    revenue: 800
-  },
-  {
-    date: '16/12',
-    revenue: 640
-  }
-]
 
 interface RevenueChartProps {
   // adicione suas props aqui
 }
 
 export function RevenueChart(props: RevenueChartProps) {
+
+  const [dateRange, setDateRange] =  useState<DateRange | undefined>({
+    from: subDays(new Date(), 7),
+    to: new Date(),
+  })
+
+  const {data: dailyRenevueinPeriod } =  useQuery({
+    queryKey: ['metrics', 'daily-receipt-in-period', dateRange],
+    queryFn: () => getDailyRenevueinPeriod({
+      from: dateRange?.from,
+      to: dateRange?.to,
+    }),
+  })
+  
+  
+  
   return (
     <Card className="col-span-6">
       <CardHeader className="flex-row items-center justify-between pb-8">
@@ -56,10 +45,15 @@ export function RevenueChart(props: RevenueChartProps) {
           <CardTitle className="text-base font-medium">|Receita no Período</CardTitle>
           <CardDescription>Receita diaria no período</CardDescription>
         </div>
+        <div className="flex items-center gap-3">
+          <Label>Periodo</Label>
+          <DateRangePicker date={dateRange} onDateChange={setDateRange} />
+        </div>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width='100%' height={240}>
-          <LineChart data={data} style={{fontsize: 12}}>
+        {dailyRenevueinPeriod && (
+          <ResponsiveContainer width='100%' height={240}>
+          <LineChart data={dailyRenevueinPeriod} style={{fontsize: 12}}>
 
             <XAxis 
               dataKey="date"
@@ -82,10 +76,11 @@ export function RevenueChart(props: RevenueChartProps) {
 
             <CartesianGrid vertical={false} className="stroke-muted"/>
 
-            <Line type='linear' strokeWidth={2} dataKey="revenue" stroke={colors.violet[500]}/>
+            <Line type='linear' strokeWidth={2} dataKey="receipt" stroke={colors.violet[500]}/>
 
           </LineChart>
         </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   );

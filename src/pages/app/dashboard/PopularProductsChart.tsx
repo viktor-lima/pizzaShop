@@ -10,30 +10,6 @@ interface PopularProductsChartProps {
 }
 
 
-
-const data = [
-  {
-    product: 'Pizza Pepperoni',
-    amount: 40
-  },
-  {
-    product: 'Pizza Mussarela',
-    amount: 30
-  },
-  {
-    product: 'Pizza Marguerita',
-    amount: 50
-  },
-  {
-    product: 'Pizza Calabresa',
-    amount: 16
-  },
-  {
-    product: 'Pizza Frango Especial',
-    amount: 26
-  },
-]
-
 const COLORS = [
   colors.sky[500],
   colors.amber[500],
@@ -48,7 +24,6 @@ export function PopularProductsChart(props: PopularProductsChartProps) {
     queryKey: ['metrics', 'popular-products'],
     queryFn: getPopularProducts,
   })
-  console.log(popularProducts);
   
 
   return (
