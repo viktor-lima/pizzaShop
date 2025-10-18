@@ -1,9 +1,10 @@
 import { getPopularProducts } from "@/api/getPopularProducts";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { BarChart } from "lucide-react";
+import { BarChart, LucideLoader2 } from "lucide-react";
 import { ResponsiveContainer, XAxis, YAxis, CartesianGrid, Pie, PieChart, Cell } from "recharts";
 import colors from "tailwindcss/colors";
+import { MatricCardSkeleton } from "./MatricCardSkeleton";
 
 interface PopularProductsChartProps {
   // adicione suas props aqui
@@ -35,7 +36,7 @@ export function PopularProductsChart(props: PopularProductsChartProps) {
         </div>
       </CardHeader>
       <CardContent>
-        {popularProducts && (
+        {popularProducts ? (
           <ResponsiveContainer width='100%' height={240}>
             <PieChart style={{fontsize: 12}}>
               <Pie 
@@ -88,6 +89,10 @@ export function PopularProductsChart(props: PopularProductsChartProps) {
 
             </PieChart>
           </ResponsiveContainer>
+        ): (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <LucideLoader2 className="h8 w8 text-muted-foreground animate-spin"/>
+          </div>
         )}
       </CardContent>
     </Card>

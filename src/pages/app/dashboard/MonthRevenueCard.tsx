@@ -3,6 +3,7 @@ import { PTBR } from "@/app/constants/linguage";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { DollarSign } from "lucide-react";
+import { MatricCardSkeleton } from "./MatricCardSkeleton";
 
 interface MonthRevenueCardProps {
   // adicione suas props aqui
@@ -22,7 +23,7 @@ export function MonthRevenueCard(props: MonthRevenueCardProps) {
         <DollarSign className="h-4 w-4 text-muted-foreground"/>
       </CardHeader>
       <CardContent className="space-y-1">
-        {monthRevenue && (
+        {monthRevenue ? (
           <>
           <span className="text-2xl font-bold tracking-tight">{(monthRevenue.receipt / 100).toLocaleString(PTBR, {
             style: 'currency',
@@ -40,6 +41,8 @@ export function MonthRevenueCard(props: MonthRevenueCardProps) {
             )}
           </p>
           </> 
+        ): (
+          <MatricCardSkeleton />
         )}
       </CardContent>
     </Card>

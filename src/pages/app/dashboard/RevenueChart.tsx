@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { DateRangePicker } from "@/components/ui/DateRangePicker";
 import { Label } from "@/components/ui/label";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import {
   ResponsiveContainer,
@@ -16,6 +16,7 @@ import {
 } from 'recharts'
 import { subDays } from 'date-fns'
 import colors from 'tailwindcss/colors'
+import { LucideLoader2 } from "lucide-react";
 
 interface RevenueChartProps {
   // adicione suas props aqui
@@ -36,7 +37,14 @@ export function RevenueChart(props: RevenueChartProps) {
     }),
   })
   
-  
+  const chartData = useMemo(() => {
+    return dailyRenevueinPeriod?.map(chartItem => {
+      return {
+        date: chartItem.date,
+        receipt: chartItem.receipt / 100
+      }
+    })
+  }, [dailyRenevueinPeriod])
   
   return (
     <Card className="col-span-6">
@@ -51,9 +59,9 @@ export function RevenueChart(props: RevenueChartProps) {
         </div>
       </CardHeader>
       <CardContent>
-        {dailyRenevueinPeriod && (
+        {chartData ? (
           <ResponsiveContainer width='100%' height={240}>
-          <LineChart data={dailyRenevueinPeriod} style={{fontsize: 12}}>
+          <LineChart data={chartData} style={{fontsize: 12}}>
 
             <XAxis 
               dataKey="date"
@@ -80,6 +88,10 @@ export function RevenueChart(props: RevenueChartProps) {
 
           </LineChart>
         </ResponsiveContainer>
+        ): (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <LucideLoader2 className="h8 w8 text-muted-foreground animate-spin"/>
+          </div>
         )}
       </CardContent>
     </Card>

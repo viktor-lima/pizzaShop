@@ -3,6 +3,7 @@ import { PTBR } from "@/app/constants/linguage";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { Utensils } from "lucide-react";
+import { MatricCardSkeleton } from "./MatricCardSkeleton";
 
 interface MonthOrderAmountCardProps {
   // adicione suas props aqui
@@ -22,7 +23,7 @@ export function MonthOrderAmountCard(props: MonthOrderAmountCardProps) {
         <Utensils className="h-4 w-4 text-muted-foreground"/>
       </CardHeader>
       <CardContent className="space-y-1">
-        {monthOrdersAmount && (
+        {monthOrdersAmount ? (
           <>
           <span className="text-2xl font-bold tracking-tight">{monthOrdersAmount.amount.toLocaleString(PTBR)}</span>
           <p className="text-xs text-muted-foreground">
@@ -37,6 +38,8 @@ export function MonthOrderAmountCard(props: MonthOrderAmountCardProps) {
             )}
           </p>
           </> 
+        ): (
+          <MatricCardSkeleton />
         )}
       </CardContent>
     </Card>
