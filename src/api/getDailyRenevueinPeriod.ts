@@ -6,8 +6,8 @@ export interface GetDailyRenevueinPeriodRequest {
 }
 
 export type GetDailyRenevueinPeriodResponse  = {
-   date: string;
-    receipt: number;
+  date: string;
+  receipt: number;
 }[]
 
 export async function getDailyRenevueinPeriod({from, to} : GetDailyRenevueinPeriodRequest) {
