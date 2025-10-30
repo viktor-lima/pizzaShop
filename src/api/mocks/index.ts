@@ -2,12 +2,15 @@ import { env } from '@/env'
 import { setupWorker } from 'msw/browser'
 import { singInMock } from './SingInMock'
 import { RegisterRestaurantMock } from './RegisterRestaurantsMock'
-import { GetDayOrdersAmountMock } from './GetDayOdersAmountMock'
-import { GetMonthOrdersAmountMock } from './GetMonthOrdersAmount'
+import { GetDayOrdersAmountMock } from './getDayOdersAmountMock'
+import { GetMonthOrdersAmountMock } from './getMonthOrdersAmount'
 import { getMonthCanceledOrdersAmountMock } from './getMonthCanceledOrdersAmountMock'
-import { GetMonthRevenueMock } from './GetMonthRevenueMock'
-import { GetPopularProductsMock } from './GetPopularProductsMock'
-import { GetDailyRenevueInPeriodMock } from './GetDailyRenevueInPeriodMock'
+import { GetMonthRevenueMock } from './getMonthRevenueMock'
+import { GetPopularProductsMock } from './getPopularProductsMock'
+import { GetDailyRenevueInPeriodMock } from './getDailyRenevueInPeriodMock'
+import { GetProfileMock } from './getProfileMock'
+import { GetManagedRestaurantMock } from './getManagedRestaurantMock'
+import { UpdateProfileMock } from './updateProfileMock'
 
 
 export const worker = setupWorker(
@@ -18,7 +21,10 @@ export const worker = setupWorker(
   getMonthCanceledOrdersAmountMock,
   GetMonthRevenueMock,
   GetDailyRenevueInPeriodMock,
-  GetPopularProductsMock
+  GetPopularProductsMock,
+  GetProfileMock,
+  GetManagedRestaurantMock,
+  UpdateProfileMock
 )
 
 export async function enableMSW() {
