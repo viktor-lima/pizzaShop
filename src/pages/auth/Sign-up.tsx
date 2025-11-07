@@ -29,18 +29,22 @@ export function SignUp() {
   })
 
   async function handleSignUp (data: SingUpForm) {
-    await registerRestaurantFn({
-      restaurantName: data.restaurantName,
-      managerName: data.managerName,
-      email: data.email,
-      phone: data.phone,
-    })
-    toast.success('Restaurante cadastrado com sucesso', {
-      action :{
-        label: 'Login',
-        onClick: () => {navigate(`/sing-in?email=${data.email}`)}
-      }
-    })
+    try {
+        await registerRestaurantFn({
+        restaurantName: data.restaurantName,
+        managerName: data.managerName,
+        email: data.email,
+        phone: data.phone,
+      })
+      toast.success('Restaurante cadastrado com sucesso', {
+        action :{
+          label: 'Login',
+          onClick: () => {navigate(`/sign-in?email=${data.email}`)}
+        }
+      })
+    }catch {
+      toast.error('Erro ao cadastrar Restaurante.')
+    }
   }
 
   return (
@@ -48,7 +52,7 @@ export function SignUp() {
       <Helmet title="Cadastro" />
         <div className="p-8">
           <Button variant="ghost" asChild className="absolute right-8 top-8">
-            <Link to="/sing-in" className="">
+            <Link to="/sign-in" className="">
              Fazer Login
             </Link>
           </Button>   

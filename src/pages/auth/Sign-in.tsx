@@ -50,7 +50,7 @@ export function SignIn() {
         <div className="p-8">
           <Button variant="ghost" asChild className="absolute right-8 top-8">
 
-            <Link to="/sing-up" className="">
+            <Link to="/sign-up" className="">
               Novo estabelecimento
             </Link>
 
